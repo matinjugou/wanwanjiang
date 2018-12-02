@@ -1,5 +1,5 @@
 from PyQt5.QtWidgets import *
-import PyQt5.Qt
+from PyQt5 import Qt
 
 
 class MainController(QMainWindow):
@@ -13,7 +13,10 @@ class MainController(QMainWindow):
         self.MainView.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.MainView.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
 
-    def _change_model(self, model_code):
+        # start game
+
+    def _start_game(self):
+
         pass
 
 
