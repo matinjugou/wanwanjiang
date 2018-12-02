@@ -8,7 +8,6 @@ class Wanwanjiang(QGraphicsPixmapItem):
         super(Wanwanjiang, self).__init__(parent=parent)
         self.__picture__ = QPixmap("resources//pic//wanwanjiang.png")
         self.setPixmap(self.__picture__)
-
         self.setOffset(QPointF(-1 * self.__picture__.width() / 2,
                                -1 * self.__picture__.height()))
 

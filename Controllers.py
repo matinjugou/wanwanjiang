@@ -1,20 +1,26 @@
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
+from Models import *
 
 
 class MainController(QMainWindow):
     def __init__(self):
         super(MainController, self).__init__()
         self.MainView = QGraphicsView()
+        self.MainView.setFixedSize(700, 672)
         self.GameView = QGraphicsView()
-        self.setFixedSize(700, 672)
         self.current_model = None
         self.setWindowTitle("Wanwanjiang")
+        self.setCentralWidget(self.MainView)
         self.MainView.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.MainView.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.__load_main_model__()
 
     def __load_main_model__(self):
-        pass
+        self.setFixedSize(700, 672)
+        self.current_model = StartMenu(parent=self)
+        self.current_model.Signal_ChangeModel.connect(self.__change_model__)
+        self.MainView.setScene(self.current_model)
 
     def __load_game_model__(self):
         pass
