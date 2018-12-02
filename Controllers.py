@@ -1,5 +1,5 @@
 from PyQt5.QtWidgets import *
-import PyQt5.Qt
+from PyQt5.QtCore import *
 
 
 class MainController(QMainWindow):
@@ -13,7 +13,21 @@ class MainController(QMainWindow):
         self.MainView.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.MainView.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
 
-    def _change_model(self, model_code):
+    def __load_main_model__(self):
+        pass
+
+    def __load_game_model__(self):
+        pass
+
+    @pyqtSlot(int, name="ChangeModel")
+    def __change_model__(self, model_code):
+        if model_code == 1:
+            self.__load_main_model__()
+            print("get signal 1")
+        pass
+        if model_code == 2:
+            self.__load_game_model__()
+            print("get signal 2")
         pass
 
 
