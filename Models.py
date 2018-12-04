@@ -14,7 +14,7 @@ class StartMenu(QGraphicsScene):
         self.itemMap = dict()
         self.__init__items__()
         self.timer = QTimer()
-        self.timer.start(10)
+        self.timer.start(15)
         self.timer.timeout.connect(self.__timer__clock__)
 
         self.playerSpeed = 10
@@ -22,27 +22,29 @@ class StartMenu(QGraphicsScene):
     def __init__items__(self):
         self.wanwanjiang = Wanwanjiang()
         self.wanwanjiang.setPos(350, 672)
-        self.itemMap['wanwanjiang'] = [self.wanwanjiang, 350, 672, 0, 0]
+        self.itemMap['wanwanjiang'] = [self.wanwanjiang, self.wanwanjiang.init_state]
         self.addItem(self.wanwanjiang)
 
     def keyPressEvent(self, event: QKeyEvent):
-        if event.key() == Qt.Key_Left:
-            self.itemMap['wanwanjiang'][3] = -1 * self.playerSpeed
-        elif event.key() == Qt.Key_Right:
-            self.itemMap['wanwanjiang'][3] = self.playerSpeed
-        elif event.key() == Qt.Key_Up:
-            self.playerSpeed += 1
-        elif event.key() == Qt.Key_Down:
-            self.playerSpeed = abs(self.playerSpeed - 1)
+        old_state = self.itemMap['wanwanjiang'][1]
+        self.wanwanjiang.handle_keypress_event(old_state, event)
 
     def keyReleaseEvent(self, event: QKeyEvent):
-        print("Key Release")
-        self.itemMap['wanwanjiang'][3] = 0
+        old_state = self.itemMap['wanwanjiang'][1]
+        self.wanwanjiang.handle_keyrelease_event(old_state, event)
+
+    def __update__(self):
+        for obj in self.itemMap:
+            tuple = self.itemMap[obj]
+            tuple[1]["x"] += tuple[1]["speedX"]
+            tuple[1]["y"] += tuple[1]["speedY"]
+        self.__draw__()
+
+    def __draw__(self):
+        for obj in self.itemMap:
+            tuple = self.itemMap[obj]
+            tuple[0].setPos(tuple[1]["x"], tuple[1]["y"])
 
     @pyqtSlot()
     def __timer__clock__(self):
-        for obj in self.itemMap:
-            tuple = self.itemMap[obj]
-            tuple[1] += tuple[3]
-            tuple[2] += tuple[4]
-            tuple[0].setPos(tuple[1], tuple[2])
+        self.__update__()
