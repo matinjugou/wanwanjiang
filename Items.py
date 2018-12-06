@@ -4,7 +4,7 @@ from PyQt5.QtCore import *
 
 
 class Wanwanjiang(QGraphicsPixmapItem):
-    def __init__(self):
+    def __init__(self, parent):
         super(Wanwanjiang, self).__init__()
         self.__picture__ = QPixmap("resources//pic//wanwanjiang.png")
         self.setPixmap(self.__picture__)
@@ -19,8 +19,10 @@ class Wanwanjiang(QGraphicsPixmapItem):
                            "y": 672,
                            "speedX": 0,
                            "speedY": 0,
-                           "status": "normal"
+                           "status": "normal",
+                           "alive": True
                            }
+        self.parent = parent
 
     def handle_keypress_event(self, state, event):
         self.behaviorMap[state["status"]](state, event)
@@ -49,6 +51,15 @@ class Wanwanjiang(QGraphicsPixmapItem):
             state["speedX"] = -12
         elif event.key() == Qt.Key_Right:
             state["speedX"] = 12
+
+    def update(self, state):
+        state["x"] += state["speedX"]
+        state["y"] += state["speedY"]
+        objlist = self.collidingItems()
+        for obj in objlist:
+            self.parent.add_score(obj.score)
+            state["status"] = obj.status
+            self.parent.remove_item(obj.name)
 
 
 class StartGameButton(QGraphicsPixmapItem):
@@ -98,14 +109,21 @@ class QuitGameButton(QGraphicsPixmapItem):
     def mousePressEvent(self, event: QGraphicsSceneMouseEvent):
         print("QuitGame")
         self.quit_game_call()
-        pass
 
 
 class FallObject(QGraphicsPixmapItem):
-    def __init__(self, score, speed, parent=None):
+    def __init__(self, score, status, img, name, parent=None):
         super(FallObject, self).__init__(parent=parent)
-        self.__picture__ = QPixmap("resources//pic//wanwanjiang.png")
+        self.__picture__ = QPixmap("resources//pic//" + img)
         self.setPixmap(self.__picture__)
+        self.setOffset(QPointF(-1 * self.__picture__.width() / 2,
+                               -1 * self.__picture__.height()))
 
         self.score = score
-        self.speed = speed
+        self.status = status
+        self.name = name
+
+    def update(self, state):
+        state["speedY"] += 0.2
+        state["x"] += state["speedX"]
+        state["y"] += state["speedY"]
