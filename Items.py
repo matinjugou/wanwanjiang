@@ -4,8 +4,8 @@ from PyQt5.QtCore import *
 
 
 class Wanwanjiang(QGraphicsPixmapItem):
-    def __init__(self, parent=None):
-        super(Wanwanjiang, self).__init__(parent=parent)
+    def __init__(self):
+        super(Wanwanjiang, self).__init__()
         self.__picture__ = QPixmap("resources//pic//wanwanjiang.png")
         self.setPixmap(self.__picture__)
         self.setOffset(QPointF(-1 * self.__picture__.width() / 2,
@@ -52,18 +52,24 @@ class Wanwanjiang(QGraphicsPixmapItem):
 
 
 class StartGameButton(QGraphicsPixmapItem):
-    def __init__(self, parent=None):
-        super(StartGameButton, self).__init__(parent=parent)
-        self.__picture__ = QPixmap("resources//pic//wanwanjiang.png")
+    def __init__(self, start_game_call):
+        super(StartGameButton, self).__init__()
+        self.__picture__ = QPixmap("resources//pic//startgame.png")
         self.setPixmap(self.__picture__)
+        self.start_game_call = start_game_call
 
         self.setOffset(QPointF(-1 * self.__picture__.width() / 2,
-                               -1 * self.__picture__.height()))
+                               -1 * self.__picture__.height() / 2))
+
+    def mousePressEvent(self, event: QGraphicsSceneMouseEvent):
+        print("StartGame")
+        self.start_game_call()
+        pass
 
 
 class ResumeGameButton(QGraphicsPixmapItem):
-    def __init__(self, parent=None):
-        super(ResumeGameButton, self).__init__(parent=parent)
+    def __init__(self):
+        super(ResumeGameButton, self).__init__()
         self.__picture__ = list()
         self.__picture__.append(QPixmap("resources//pic//wanwanjiang.png"))
         self.__picture__.append(QPixmap("resources//pic//wanwanjiang.png"))
@@ -78,6 +84,21 @@ class ResumeGameButton(QGraphicsPixmapItem):
             self.setPixmap(self.__picture__[0])
         if status_code == 1:
             self.setPixmap(self.__picture__[1])
+
+
+class QuitGameButton(QGraphicsPixmapItem):
+    def __init__(self, quit_game_call):
+        super(QuitGameButton, self).__init__()
+        self.__picture__ = QPixmap("resources//pic//quitgame.png")
+        self.setPixmap(self.__picture__)
+        self.quit_game_call = quit_game_call
+
+        self.setOffset(QPointF(-1 * self.__picture__.width(), 0))
+
+    def mousePressEvent(self, event: QGraphicsSceneMouseEvent):
+        print("QuitGame")
+        self.quit_game_call()
+        pass
 
 
 class FallObject(QGraphicsPixmapItem):

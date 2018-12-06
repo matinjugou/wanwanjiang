@@ -17,12 +17,15 @@ class MainController(QMainWindow):
 
     def __load_main_model__(self):
         self.setFixedSize(700, 672)
-        self.current_model = StartMenu(parent=self)
+        self.current_model = StartScene(self)
         self.current_model.Signal_ChangeModel.connect(self.__change_model__)
         self.MainView.setScene(self.current_model)
 
     def __load_game_model__(self):
-        pass
+        self.setFixedSize(700, 672)
+        self.current_model = GameScene(self)
+        self.current_model.Signal_ChangeModel.connect(self.__change_model__)
+        self.MainView.setScene(self.current_model)
 
     @pyqtSlot(int, name="ChangeModel")
     def __change_model__(self, model_code):
