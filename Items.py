@@ -67,11 +67,14 @@ class Wanwanjiang(QGraphicsPixmapItem):
                 self.collidCount = 0
             else:
                 if state["status"] != "normal":
-                    if self.collidCount != 3:
+                    if self.collidCount < 2:
                         self.collidCount += 1
                     else:
                         state["status"] = "normal"
                         self.collidCount = 0
+            print("status", state["status"])
+            print("objstatus", obj.status)
+            print(self.collidCount)
             self.parent.remove_item(obj.name)
         self.setPixmap(self.__picture__[state["status"]])
 
@@ -127,7 +130,7 @@ class QuitGameButton(QGraphicsPixmapItem):
 
 class FallObject(QGraphicsPixmapItem):
     def __init__(self, score, status, img, name, parent=None):
-        super(FallObject, self).__init__(parent=parent)
+        super(FallObject, self).__init__()
         self.__picture__ = QPixmap("resources//pic//" + img)
         self.setPixmap(self.__picture__)
         self.setOffset(QPointF(-1 * self.__picture__.width() / 2,
@@ -136,8 +139,11 @@ class FallObject(QGraphicsPixmapItem):
         self.score = score
         self.status = status
         self.name = name
+        self.parent = parent
 
     def update(self, state):
         state["speedY"] += 0.2
         state["x"] += state["speedX"]
         state["y"] += state["speedY"]
+        if state["y"] > 700:
+            self.parent.remove_item(self.name)

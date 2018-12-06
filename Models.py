@@ -71,7 +71,7 @@ class GameScene(QGraphicsScene):
         try:
             for obj in self.map[str(self.clockCount)]:
                 name = "obj" + str(self.objectCount)
-                new_obj = FallObject(obj[0], obj[2], obj[3], name)
+                new_obj = FallObject(obj[0], obj[2], obj[3], name, self)
                 new_obj.setPos(obj[4] * 700, -10)
                 self.itemMap[name] = [new_obj, {"x": obj[4] * 700,
                                                 "y": -10,
