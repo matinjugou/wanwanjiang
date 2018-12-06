@@ -6,10 +6,13 @@ from PyQt5.QtCore import *
 class Wanwanjiang(QGraphicsPixmapItem):
     def __init__(self, parent):
         super(Wanwanjiang, self).__init__()
-        self.__picture__ = QPixmap("resources//pic//wanwanjiang.png")
-        self.setPixmap(self.__picture__)
-        self.setOffset(QPointF(-1 * self.__picture__.width() / 2,
-                               -1 * self.__picture__.height()))
+        self.__picture__ = dict()
+        self.__picture__["normal"] = QPixmap("resources//pic//wanwanjiang.png")
+        self.__picture__["bonus"] = QPixmap("resources//pic//wanwanjiang_bonus.png")
+        self.__picture__["weak"] = QPixmap("resources//pic//wanwanjiang_weak.png")
+        self.setPixmap(self.__picture__["normal"])
+        self.setOffset(QPointF(-1 * self.__picture__["normal"].width() / 2,
+                               -1 * self.__picture__["normal"].height()))
 
         self.behaviorMap = {"normal": self.normal_behavior,
                             "weak": self.weak_behavior,
@@ -23,6 +26,7 @@ class Wanwanjiang(QGraphicsPixmapItem):
                            "alive": True
                            }
         self.parent = parent
+        self.collidCount = 0
 
     def handle_keypress_event(self, state, event):
         self.behaviorMap[state["status"]](state, event)
@@ -58,8 +62,18 @@ class Wanwanjiang(QGraphicsPixmapItem):
         objlist = self.collidingItems()
         for obj in objlist:
             self.parent.add_score(obj.score)
-            state["status"] = obj.status
+            if obj.status != "normal":
+                state["status"] = obj.status
+                self.collidCount = 0
+            else:
+                if state["status"] != "normal":
+                    if self.collidCount != 3:
+                        self.collidCount += 1
+                    else:
+                        state["status"] = "normal"
+                        self.collidCount = 0
             self.parent.remove_item(obj.name)
+        self.setPixmap(self.__picture__[state["status"]])
 
 
 class StartGameButton(QGraphicsPixmapItem):
