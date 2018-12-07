@@ -17,8 +17,12 @@ class StartScene(QGraphicsScene):
         self.__init_items__()
 
     def __init_items__(self):
+        self.Wanwanjiang = NormalWanwanjiang()
+        self.Wanwanjiang.setPos(self.width() / 2, self.height() / 2 - 100)
+        self.addItem(self.Wanwanjiang)
+
         self.startGameButton = StartGameButton(self.__start_game__)
-        self.startGameButton.setPos(self.width() / 2, self.height() / 2)
+        self.startGameButton.setPos(self.width() / 2, self.height() / 2 + 100)
         self.addItem(self.startGameButton)
 
     def __start_game__(self):
@@ -128,7 +132,9 @@ class GameScene(QGraphicsScene):
 
     def __quit_game__(self):
         self.release()
-        if self.score >= 200 and self.zCount == 7:
+        if self.clockCount < 32:
+            self.Signal_ChangeModel.emit(1)
+        elif self.score >= 200 and self.zCount == 7:
             self.Signal_ChangeModel.emit(4)
         else:
             self.Signal_ChangeModel.emit(3)
@@ -178,7 +184,7 @@ class EndSceneFail(QGraphicsScene):
 
     def __init_items__(self):
         self.sadWanwanjiang = SadWanwanjiang()
-        self.sadWanwanjiang.setPos(self.width() / 2, self.height() / 2)
+        self.sadWanwanjiang.setPos(self.width() / 2, self.height() / 2 - 100)
         self.addItem(self.sadWanwanjiang)
 
         self.startGameButton = StartGameButton(self.__start_game__)

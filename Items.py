@@ -98,6 +98,15 @@ class HappyWanwanjiang(QGraphicsPixmapItem):
                        -1 * self.__picture__.height() / 2)
 
 
+class NormalWanwanjiang(QGraphicsPixmapItem):
+    def __init__(self):
+        super(NormalWanwanjiang, self).__init__()
+        self.__picture__ = QPixmap("resources//pic//normalwanwanjiang.png")
+        self.setPixmap(self.__picture__)
+        self.setOffset(-1 * self.__picture__.width() / 2,
+                       -1 * self.__picture__.height() / 2)
+
+
 class SadWanwanjiang(QGraphicsPixmapItem):
     def __init__(self):
         super(SadWanwanjiang, self).__init__()
