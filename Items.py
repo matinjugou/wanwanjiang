@@ -127,7 +127,6 @@ class StartGameButton(QGraphicsPixmapItem):
                                -1 * self.__picture__.height() / 2))
 
     def mousePressEvent(self, event: QGraphicsSceneMouseEvent):
-        print("StartGame")
         self.start_game_call()
 
 

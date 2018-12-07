@@ -6,7 +6,6 @@ from Items import *
 from Maps import *
 
 
-
 class StartScene(QGraphicsScene):
     Signal_ChangeModel = pyqtSignal(int, name="Signal_ChangeModel")
 
@@ -71,24 +70,34 @@ class GameScene(QGraphicsScene):
         self.quitgamebutton.setPos(690, 10)
         self.addItem(self.quitgamebutton)
 
+        fid = QFontDatabase.addApplicationFont("resources//font//youyuan.ttf")
+        fontFamilies = QFontDatabase.applicationFontFamilies(fid)
+        new_font = QFont()
+        new_font.setFamily(fontFamilies[0])
+        new_font.setPixelSize(14)
+
         self.scoreText = QGraphicsTextItem()
         self.scoreText.setPos(10, 10)
         self.scoreText.setPlainText("当前得分：%d" % self.score)
+        self.scoreText.setFont(new_font)
         self.addItem(self.scoreText)
 
         self.statusText = QGraphicsTextItem()
         self.statusText.setPos(10, 25)
         self.statusText.setPlainText("当前状态：正常")
+        self.statusText.setFont(new_font)
         self.addItem(self.statusText)
 
         self.zCountText = QGraphicsTextItem()
         self.zCountText.setPos(10, 40)
         self.zCountText.setPlainText("捕获庄周数：%d" % self.zCount)
+        self.zCountText.setFont(new_font)
         self.addItem(self.zCountText)
 
         self.countDownText = QGraphicsTextItem()
         self.countDownText.setPos(10, 55)
         self.countDownText.setPlainText("剩余时间：%d" % (32 - self.clockCount))
+        self.countDownText.setFont(new_font)
         self.addItem(self.countDownText)
 
     def __start_clock__(self):
