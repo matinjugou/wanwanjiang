@@ -27,15 +27,28 @@ class MainController(QMainWindow):
         self.current_model.Signal_ChangeModel.connect(self.__change_model__)
         self.MainView.setScene(self.current_model)
 
+    def __load_end_fail_model__(self):
+        self.setFixedSize(700, 672)
+        self.current_model = EndSceneFail(self)
+        self.current_model.Signal_ChangeModel.connect(self.__change_model__)
+        self.MainView.setScene(self.current_model)
+
+    def __load_end_succ_model__(self):
+        self.setFixedSize(700, 672)
+        self.current_model = EndSceneSuccess(self)
+        self.current_model.Signal_ChangeModel.connect(self.__change_model__)
+        self.MainView.setScene(self.current_model)
+
     @pyqtSlot(int, name="ChangeModel")
     def __change_model__(self, model_code):
         if model_code == 1:
             self.__load_main_model__()
-            print("get signal 1")
-        pass
         if model_code == 2:
             self.__load_game_model__()
-            print("get signal 2")
+        if model_code == 3:
+            self.__load_end_fail_model__()
+        if model_code == 4:
+            self.__load_end_succ_model__()
 
 
 

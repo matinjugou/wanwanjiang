@@ -6,6 +6,7 @@ from Items import *
 from Maps import *
 
 
+
 class StartScene(QGraphicsScene):
     Signal_ChangeModel = pyqtSignal(int, name="Signal_ChangeModel")
 
@@ -43,6 +44,7 @@ class GameScene(QGraphicsScene):
 
         self.map = map1
         self.score = 0
+        self.zCount = 0
 
         self.__init_items__()
         self.__start_clock__()
@@ -66,6 +68,21 @@ class GameScene(QGraphicsScene):
         self.scoreText.setPlainText("当前得分：%d" % self.score)
         self.addItem(self.scoreText)
 
+        self.statusText = QGraphicsTextItem()
+        self.statusText.setPos(10, 25)
+        self.statusText.setPlainText("当前状态：正常")
+        self.addItem(self.statusText)
+
+        self.zCountText = QGraphicsTextItem()
+        self.zCountText.setPos(10, 40)
+        self.zCountText.setPlainText("捕获庄周数：%d" % self.zCount)
+        self.addItem(self.zCountText)
+
+        self.countDownText = QGraphicsTextItem()
+        self.countDownText.setPos(10, 55)
+        self.countDownText.setPlainText("剩余时间：%d" % (32 - self.clockCount))
+        self.addItem(self.countDownText)
+
     def __start_clock__(self):
         self.timer.start(15)
         self.game_timer.start(1000)
@@ -73,6 +90,8 @@ class GameScene(QGraphicsScene):
     @pyqtSlot(name="AddObject")
     def __add_object__(self):
         self.clockCount += 1
+        if self.clockCount == 32:
+            self.__quit_game__()
         try:
             for obj in self.map[str(self.clockCount)]:
                 name = "obj" + str(self.objectCount)
@@ -100,6 +119,8 @@ class GameScene(QGraphicsScene):
 
     def add_score(self, score):
         self.score += score
+        if score == 20:
+            self.zCount += 1
 
     def remove_item(self, name):
         self.removeItem(self.itemMap[name][0])
@@ -107,7 +128,10 @@ class GameScene(QGraphicsScene):
 
     def __quit_game__(self):
         self.release()
-        self.Signal_ChangeModel.emit(1)
+        if self.score >= 200 and self.zCount == 7:
+            self.Signal_ChangeModel.emit(4)
+        else:
+            self.Signal_ChangeModel.emit(3)
 
     def __update__(self):
         for obj in self.itemMap:
@@ -119,6 +143,14 @@ class GameScene(QGraphicsScene):
                 newItemMap[obj] = self.itemMap[obj]
         self.itemMap = newItemMap
         self.scoreText.setPlainText("当前得分：%d" % self.score)
+        self.countDownText.setPlainText("剩余时间：%d" % (32 - self.clockCount))
+        if self.itemMap['wanwanjiang'][1]["status"] == "normal":
+            self.statusText.setPlainText("当前状态：正常")
+        elif self.itemMap['wanwanjiang'][1]["status"] == "bonus":
+            self.statusText.setPlainText("当前状态：兴奋！！")
+        elif self.itemMap['wanwanjiang'][1]["status"] == "weak":
+            self.statusText.setPlainText("当前状态：虚弱……")
+        self.zCountText.setPlainText("捕获庄周数：%d" % self.zCount)
         self.__draw__()
 
     def __draw__(self):
@@ -133,3 +165,58 @@ class GameScene(QGraphicsScene):
     def release(self):
         self.timer.stop()
         self.game_timer.stop()
+
+
+class EndSceneFail(QGraphicsScene):
+    Signal_ChangeModel = pyqtSignal(int, name="Signal_ChangeModel")
+
+    def __init__(self, parent=None):
+        super(EndSceneFail, self).__init__(parent=parent)
+        self.setSceneRect(0, 0, self.parent().width(), self.parent().height())
+        self.itemMap = dict()
+        self.__init_items__()
+
+    def __init_items__(self):
+        self.sadWanwanjiang = SadWanwanjiang()
+        self.sadWanwanjiang.setPos(self.width() / 2, self.height() / 2)
+        self.addItem(self.sadWanwanjiang)
+
+        self.startGameButton = StartGameButton(self.__start_game__)
+        self.startGameButton.setPos(self.width() / 2, self.height() / 2 + 100)
+        self.addItem(self.startGameButton)
+
+    def __start_game__(self):
+        self.Signal_ChangeModel.emit(2)
+
+    def release(self):
+        pass
+
+
+class EndSceneSuccess(QGraphicsScene):
+    Signal_ChangeModel = pyqtSignal(int, name="Signal_ChangeModel")
+
+    def __init__(self, parent=None):
+        super(EndSceneSuccess, self).__init__(parent=parent)
+        self.setSceneRect(0, 0, self.parent().width(), self.parent().height())
+        self.itemMap = dict()
+        self.__init_items__()
+
+    def __init_items__(self):
+        self.happyWanwanjiang = HappyWanwanjiang()
+        self.happyWanwanjiang.setPos(self.width() / 2, self.height() / 2 - 100)
+        self.addItem(self.happyWanwanjiang)
+
+        self.urlText = QGraphicsTextItem()
+        self.urlText.setPos(200, 500)
+        self.urlText.setPlainText("惊喜：https://shimo.im/docs/bbHma4SWYyE4MfeJ/")
+        self.addItem(self.urlText)
+
+        self.startGameButton = StartGameButton(self.__start_game__)
+        self.startGameButton.setPos(self.width() / 2, self.height() / 2 + 100)
+        self.addItem(self.startGameButton)
+
+    def __start_game__(self):
+        self.Signal_ChangeModel.emit(2)
+
+    def release(self):
+        pass
