@@ -129,26 +129,6 @@ class StartGameButton(QGraphicsPixmapItem):
     def mousePressEvent(self, event: QGraphicsSceneMouseEvent):
         print("StartGame")
         self.start_game_call()
-        pass
-
-
-class ResumeGameButton(QGraphicsPixmapItem):
-    def __init__(self):
-        super(ResumeGameButton, self).__init__()
-        self.__picture__ = list()
-        self.__picture__.append(QPixmap("resources//pic//wanwanjiang.png"))
-        self.__picture__.append(QPixmap("resources//pic//wanwanjiang.png"))
-        self.setPixmap(self.__picture__[0])
-
-        self.setOffset(QPointF(-1 * self.__picture__[0].width() / 2,
-                               -1 * self.__picture__[0].height()))
-
-    @pyqtSlot(int, name='resumeGame')
-    def __change_pic__(self, status_code):
-        if status_code == 0:
-            self.setPixmap(self.__picture__[0])
-        if status_code == 1:
-            self.setPixmap(self.__picture__[1])
 
 
 class QuitGameButton(QGraphicsPixmapItem):
@@ -163,6 +143,21 @@ class QuitGameButton(QGraphicsPixmapItem):
     def mousePressEvent(self, event: QGraphicsSceneMouseEvent):
         print("QuitGame")
         self.quit_game_call()
+
+
+class ConfirmButton(QGraphicsPixmapItem):
+    def __init__(self, confirm_call):
+        super(ConfirmButton, self).__init__()
+        self.__picture__ = QPixmap("resources//pic//confirm.png")
+        self.setPixmap(self.__picture__)
+        self.confirm_call = confirm_call
+
+        self.setOffset(QPointF(-1 * self.__picture__.width() / 2,
+                               -1 * self.__picture__.height() / 2))
+
+    def mousePressEvent(self, event: QGraphicsSceneMouseEvent):
+        print("QuitGame")
+        self.confirm_call()
 
 
 class FallObject(QGraphicsPixmapItem):

@@ -17,6 +17,10 @@ class StartScene(QGraphicsScene):
         self.__init_items__()
 
     def __init_items__(self):
+        self.background = QGraphicsPixmapItem(QPixmap("resources//pic//startbg.png"))
+        self.background.setPos(0, 0)
+        self.addItem(self.background)
+
         self.Wanwanjiang = NormalWanwanjiang()
         self.Wanwanjiang.setPos(self.width() / 2, self.height() / 2 - 100)
         self.addItem(self.Wanwanjiang)
@@ -183,16 +187,24 @@ class EndSceneFail(QGraphicsScene):
         self.__init_items__()
 
     def __init_items__(self):
+        self.background = QGraphicsPixmapItem(QPixmap("resources//pic//failbg.png"))
+        self.background.setPos(0, 0)
+        self.addItem(self.background)
+
         self.sadWanwanjiang = SadWanwanjiang()
         self.sadWanwanjiang.setPos(self.width() / 2, self.height() / 2 - 100)
         self.addItem(self.sadWanwanjiang)
 
-        self.startGameButton = StartGameButton(self.__start_game__)
-        self.startGameButton.setPos(self.width() / 2, self.height() / 2 + 100)
-        self.addItem(self.startGameButton)
+        self.sadText = QGraphicsPixmapItem(QPixmap("resources//pic/fail_text.png"))
+        self.sadText.setPos(80, 400)
+        self.addItem(self.sadText)
 
-    def __start_game__(self):
-        self.Signal_ChangeModel.emit(2)
+        self.confirmButton = ConfirmButton(self.__confirm__)
+        self.confirmButton.setPos(self.width() / 2, self.height() / 2 + 200)
+        self.addItem(self.confirmButton)
+
+    def __confirm__(self):
+        self.Signal_ChangeModel.emit(1)
 
     def release(self):
         pass
@@ -208,21 +220,29 @@ class EndSceneSuccess(QGraphicsScene):
         self.__init_items__()
 
     def __init_items__(self):
+        self.background = QGraphicsPixmapItem(QPixmap("resources//pic//winbg.png"))
+        self.background.setPos(0, 0)
+        self.addItem(self.background)
+
         self.happyWanwanjiang = HappyWanwanjiang()
         self.happyWanwanjiang.setPos(self.width() / 2, self.height() / 2 - 100)
         self.addItem(self.happyWanwanjiang)
 
+        self.winText = QGraphicsPixmapItem(QPixmap("resources//pic/win_text.png"))
+        self.winText.setPos(80, 400)
+        self.addItem(self.winText)
+
         self.urlText = QGraphicsTextItem()
-        self.urlText.setPos(200, 500)
+        self.urlText.setPos(200, 600)
         self.urlText.setPlainText("惊喜：https://shimo.im/docs/bbHma4SWYyE4MfeJ/")
         self.addItem(self.urlText)
 
-        self.startGameButton = StartGameButton(self.__start_game__)
-        self.startGameButton.setPos(self.width() / 2, self.height() / 2 + 100)
-        self.addItem(self.startGameButton)
+        self.confirmButton = ConfirmButton(self.__confirm__)
+        self.confirmButton.setPos(self.width() / 2, self.height() / 2 + 200)
+        self.addItem(self.confirmButton)
 
-    def __start_game__(self):
-        self.Signal_ChangeModel.emit(2)
+    def __confirm__(self):
+        self.Signal_ChangeModel.emit(1)
 
     def release(self):
         pass
