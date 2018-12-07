@@ -43,10 +43,15 @@ class GameScene(QGraphicsScene):
 
         self.map = map1
         self.score = 0
+
         self.__init_items__()
         self.__start_clock__()
 
     def __init_items__(self):
+        self.backgroundPNG = Background()
+        self.backgroundPNG.setPos(0, 0)
+        self.addItem(self.backgroundPNG)
+
         self.wanwanjiang = Wanwanjiang(self)
         self.wanwanjiang.setPos(350, 672)
         self.itemMap['wanwanjiang'] = [self.wanwanjiang, self.wanwanjiang.init_state]
@@ -107,7 +112,7 @@ class GameScene(QGraphicsScene):
     def __update__(self):
         for obj in self.itemMap:
             tuple = self.itemMap[obj]
-            tuple[0].update(tuple[1])
+            tuple[0].self_update(tuple[1])
         newItemMap = dict()
         for obj in self.itemMap:
             if self.itemMap[obj][1]["alive"]:

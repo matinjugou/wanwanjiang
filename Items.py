@@ -6,6 +6,7 @@ from PyQt5.QtCore import *
 class Wanwanjiang(QGraphicsPixmapItem):
     def __init__(self, parent):
         super(Wanwanjiang, self).__init__()
+        print(parent)
         self.__picture__ = dict()
         self.__picture__["normal"] = QPixmap("resources//pic//wanwanjiang.png")
         self.__picture__["bonus"] = QPixmap("resources//pic//wanwanjiang_bonus.png")
@@ -25,11 +26,34 @@ class Wanwanjiang(QGraphicsPixmapItem):
                            "status": "normal",
                            "alive": True
                            }
-        self.parent = parent
+        self.scene_parent = parent
         self.collidCount = 0
 
     def handle_keypress_event(self, state, event):
         self.behaviorMap[state["status"]](state, event)
+
+    def self_update(self, state):
+        state["x"] += state["speedX"]
+        state["y"] += state["speedY"]
+        objlist = self.collidingItems()
+        for obj in objlist:
+            if isinstance(obj, FallObject):
+                self.scene_parent.add_score(obj.score)
+                if obj.status != "normal":
+                    state["status"] = obj.status
+                    self.collidCount = 0
+                else:
+                    if state["status"] != "normal":
+                        if self.collidCount < 2:
+                            self.collidCount += 1
+                        else:
+                            state["status"] = "normal"
+                            self.collidCount = 0
+                print("status", state["status"])
+                print("objstatus", obj.status)
+                print(self.collidCount)
+                self.scene_parent.remove_item(obj.name)
+        self.setPixmap(self.__picture__[state["status"]])
 
     @staticmethod
     def handle_keyrelease_event(state, event):
@@ -56,27 +80,12 @@ class Wanwanjiang(QGraphicsPixmapItem):
         elif event.key() == Qt.Key_Right:
             state["speedX"] = 12
 
-    def update(self, state):
-        state["x"] += state["speedX"]
-        state["y"] += state["speedY"]
-        objlist = self.collidingItems()
-        for obj in objlist:
-            self.parent.add_score(obj.score)
-            if obj.status != "normal":
-                state["status"] = obj.status
-                self.collidCount = 0
-            else:
-                if state["status"] != "normal":
-                    if self.collidCount < 2:
-                        self.collidCount += 1
-                    else:
-                        state["status"] = "normal"
-                        self.collidCount = 0
-            print("status", state["status"])
-            print("objstatus", obj.status)
-            print(self.collidCount)
-            self.parent.remove_item(obj.name)
-        self.setPixmap(self.__picture__[state["status"]])
+
+class Background(QGraphicsPixmapItem):
+    def __init__(self):
+        super(Background, self).__init__()
+        self.__picture__ = QPixmap("resources//pic//background.png")
+        self.setPixmap(self.__picture__)
 
 
 class StartGameButton(QGraphicsPixmapItem):
@@ -141,7 +150,7 @@ class FallObject(QGraphicsPixmapItem):
         self.name = name
         self.parent = parent
 
-    def update(self, state):
+    def self_update(self, state):
         state["speedY"] += 0.2
         state["x"] += state["speedX"]
         state["y"] += state["speedY"]
