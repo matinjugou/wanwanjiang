@@ -241,9 +241,16 @@ class EndSceneSuccess(QGraphicsScene):
         self.winText.setPos(80, 400)
         self.addItem(self.winText)
 
+        fid = QFontDatabase.addApplicationFont("resources//font//youyuan.ttf")
+        fontFamilies = QFontDatabase.applicationFontFamilies(fid)
+        new_font = QFont()
+        new_font.setFamily(fontFamilies[0])
+        new_font.setPixelSize(14)
+
         self.urlText = QGraphicsTextItem()
         self.urlText.setPos(200, 600)
         self.urlText.setPlainText("惊喜：https://shimo.im/docs/bbHma4SWYyE4MfeJ/")
+        self.urlText.setFont(new_font)
         self.addItem(self.urlText)
 
         self.confirmButton = ConfirmButton(self.__confirm__)
