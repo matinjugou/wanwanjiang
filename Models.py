@@ -4,6 +4,7 @@ from PyQt5.QtCore import *
 from PyQt5.Qt import *
 from Items import *
 from Maps import *
+from PyQt5.QtWidgets import QMessageBox
 
 
 class StartScene(QGraphicsScene):
@@ -70,34 +71,24 @@ class GameScene(QGraphicsScene):
         self.quitgamebutton.setPos(690, 10)
         self.addItem(self.quitgamebutton)
 
-        fid = QFontDatabase.addApplicationFont("resources//font//youyuan.ttf")
-        fontFamilies = QFontDatabase.applicationFontFamilies(fid)
-        new_font = QFont()
-        new_font.setFamily(fontFamilies[0])
-        new_font.setPixelSize(14)
-
         self.scoreText = QGraphicsTextItem()
         self.scoreText.setPos(10, 10)
         self.scoreText.setPlainText("当前得分：%d" % self.score)
-        self.scoreText.setFont(new_font)
         self.addItem(self.scoreText)
 
         self.statusText = QGraphicsTextItem()
         self.statusText.setPos(10, 25)
         self.statusText.setPlainText("当前状态：正常")
-        self.statusText.setFont(new_font)
         self.addItem(self.statusText)
 
         self.zCountText = QGraphicsTextItem()
         self.zCountText.setPos(10, 40)
         self.zCountText.setPlainText("捕获庄周数：%d" % self.zCount)
-        self.zCountText.setFont(new_font)
         self.addItem(self.zCountText)
 
         self.countDownText = QGraphicsTextItem()
         self.countDownText.setPos(10, 55)
         self.countDownText.setPlainText("剩余时间：%d" % (32 - self.clockCount))
-        self.countDownText.setFont(new_font)
         self.addItem(self.countDownText)
 
     def __start_clock__(self):
@@ -241,16 +232,9 @@ class EndSceneSuccess(QGraphicsScene):
         self.winText.setPos(80, 400)
         self.addItem(self.winText)
 
-        fid = QFontDatabase.addApplicationFont("resources//font//youyuan.ttf")
-        fontFamilies = QFontDatabase.applicationFontFamilies(fid)
-        new_font = QFont()
-        new_font.setFamily(fontFamilies[0])
-        new_font.setPixelSize(14)
-
         self.urlText = QGraphicsTextItem()
-        self.urlText.setPos(200, 600)
-        self.urlText.setPlainText("惊喜：https://shimo.im/docs/bbHma4SWYyE4MfeJ/")
-        self.urlText.setFont(new_font)
+        self.urlText.setPos(160, 600)
+        self.urlText.setHtml("<h3 style='color: #007FFF'><b>惊喜：https://blog.magichc7.com/post/forwanwanjiang.html</b></h3>")
         self.addItem(self.urlText)
 
         self.confirmButton = ConfirmButton(self.__confirm__)
