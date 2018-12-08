@@ -13,7 +13,7 @@ class MainController(QMainWindow):
         self.setCentralWidget(self.MainView)
         self.MainView.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.MainView.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
-        self.__load_end_succ_model__()
+        self.__load_main_model__()
 
     def __load_main_model__(self):
         self.setFixedSize(700, 672)

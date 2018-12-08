@@ -115,7 +115,7 @@ class GameScene(QGraphicsScene):
                 self.addItem(new_obj)
                 self.objectCount += 1
         except Exception as e:
-            print(e)
+            pass
 
     def keyPressEvent(self, event: QKeyEvent):
         old_state = self.itemMap['wanwanjiang'][1]
@@ -234,7 +234,7 @@ class EndSceneSuccess(QGraphicsScene):
 
         self.urlText = QGraphicsTextItem()
         self.urlText.setPos(160, 600)
-        self.urlText.setHtml("<h3 style='color: #007FFF'><b>惊喜：https://blog.magichc7.com/post/forwanwanjiang.html</b></h3>")
+        self.urlText.setHtml("<h5 style='color: #007FFF'><b>惊喜：https://blog.magichc7.com/post/forwanwanjiang.html</b></h5>")
         self.addItem(self.urlText)
 
         self.confirmButton = ConfirmButton(self.__confirm__)

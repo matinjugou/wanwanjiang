@@ -6,7 +6,6 @@ from PyQt5.QtCore import *
 class Wanwanjiang(QGraphicsPixmapItem):
     def __init__(self, parent):
         super(Wanwanjiang, self).__init__()
-        print(parent)
         self.__picture__ = dict()
         self.__picture__["normal"] = QPixmap("resources//pic//wanwanjiang.png")
         self.__picture__["bonus"] = QPixmap("resources//pic//wanwanjiang_bonus.png")
@@ -140,7 +139,6 @@ class QuitGameButton(QGraphicsPixmapItem):
         self.setOffset(QPointF(-1 * self.__picture__.width(), 0))
 
     def mousePressEvent(self, event: QGraphicsSceneMouseEvent):
-        print("QuitGame")
         self.quit_game_call()
 
 
@@ -155,7 +153,6 @@ class ConfirmButton(QGraphicsPixmapItem):
                                -1 * self.__picture__.height() / 2))
 
     def mousePressEvent(self, event: QGraphicsSceneMouseEvent):
-        print("QuitGame")
         self.confirm_call()
 
 
