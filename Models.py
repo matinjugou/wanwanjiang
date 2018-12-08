@@ -232,16 +232,12 @@ class EndSceneSuccess(QGraphicsScene):
         self.winText.setPos(80, 400)
         self.addItem(self.winText)
 
-        self.urlText = QGraphicsTextItem()
-        self.urlText.setPos(160, 600)
-        self.urlText.setHtml("<h5 style='color: #007FFF'><b>惊喜：https://blog.magichc7.com/post/forwanwanjiang.html</b></h5>")
-        self.addItem(self.urlText)
-
         self.confirmButton = ConfirmButton(self.__confirm__)
         self.confirmButton.setPos(self.width() / 2, self.height() / 2 + 200)
         self.addItem(self.confirmButton)
 
     def __confirm__(self):
+        self.Signal_ChangeModel.emit(5)
         self.Signal_ChangeModel.emit(1)
 
     def release(self):

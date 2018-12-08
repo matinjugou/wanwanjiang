@@ -49,6 +49,10 @@ class MainController(QMainWindow):
             self.__load_end_fail_model__()
         if model_code == 4:
             self.__load_end_succ_model__()
+        if model_code == 5:
+            QMessageBox.information(self, "惊喜",
+                                    "惊喜：https://blog.magichc7.com/post/forwanwanjiang.html",
+                                    QMessageBox.Yes)
 
 
 
